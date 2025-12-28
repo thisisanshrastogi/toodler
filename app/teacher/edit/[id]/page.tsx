@@ -71,7 +71,10 @@ export default function EditHomeworkPage() {
 
   const handleNewImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-    setNewImages((prev) => [...prev, ...Array.from(e.target.files as FileList)]);
+    setNewImages((prev) => [
+      ...prev,
+      ...Array.from(e.target.files as FileList),
+    ]);
   };
 
   const removeExistingImage = (url: string) => {
@@ -158,7 +161,7 @@ export default function EditHomeworkPage() {
           <h1 className="text-3xl font-black">Edit Homework</h1>
           <button
             onClick={() => router.back()}
-            className="inline-flex items-center gap-1.5 font-semibold text-gray-700 bg-white/70 px-2 py-1.5 rounded-md active:opacity-60"
+            className="inline-flex items-center gap-1.5 font-semibold text-gray-700 bg-white/0 px-2 py-1.5 rounded-md active:opacity-60"
           >
             <ChevronLeft size={18} />
             Back

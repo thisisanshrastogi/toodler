@@ -4,6 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import Loader from "./loader";
 
 export default function TeacherGuard({
   children,
@@ -32,7 +33,7 @@ export default function TeacherGuard({
 
       // ✅ Logged in AND on login page → go to upload
       if (isLoginPage) {
-        router.replace("/teacher/upload");
+        router.replace("/teacher/");
         return;
       }
 
@@ -43,7 +44,12 @@ export default function TeacherGuard({
     return () => unsub();
   }, [pathname, router]);
 
-  if (!checked) return <p>Checking auth…</p>;
+  if (!checked)
+    return (
+      <div className="flex h-screen justify-center items-center bg-white">
+        <Loader />
+      </div>
+    );
 
   return <>{children}</>;
 }

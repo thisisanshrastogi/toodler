@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
+import Loader from "@/components/loader";
 
 /* ---------- TYPES ---------- */
 
@@ -139,7 +140,11 @@ export default function HomeworkDetailPage() {
   /* ---------- LOADING ---------- */
 
   if (loading) {
-    return <div className="p-6 font-bold text-gray-600">Loading homework…</div>;
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
+        <Loader />
+      </div>
+    );
   }
 
   if (!homework) return null;

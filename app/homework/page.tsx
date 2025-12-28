@@ -12,6 +12,7 @@ import {
 
 import { db } from "@/lib/firebase";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import Loader from "@/components/loader";
 
 /* ---------- TYPES ---------- */
 
@@ -80,11 +81,13 @@ export default function HomeworkListPage() {
 
       <main className="relative z-10 max-w-xl mx-auto px-4 py-8 space-y-6">
         {/* Header */}
-        <h1 className="text-3xl font-black">Homework 📘</h1>
+        <h1 className="text-3xl font-black">Homework </h1>
 
         {/* Content */}
         {loading ? (
-          <p className="font-bold text-gray-600">Loading homework…</p>
+          <div className="flex h-full justify-center items-center">
+            <Loader />
+          </div>
         ) : homeworks.length === 0 ? (
           <p className="font-bold text-gray-600">No homework posted yet.</p>
         ) : (
@@ -149,6 +152,7 @@ export default function HomeworkListPage() {
         )}
 
         {/* Footer */}
+
         <p className="text-center text-gray-500 font-semibold pt-6">
           Tap a homework to see details ✨
         </p>

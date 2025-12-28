@@ -98,8 +98,8 @@ export default function TeacherDashboardPage() {
 
       <main className="relative z-10 max-w-xl mx-auto px-4 py-8 space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-black">Teacher Dashboard 🧑‍🏫</h1>
+        <div className="flex items-center justify-between gap-10">
+          <h1 className="text-3xl font-black">Teacher Dashboard </h1>
 
           <Link
             href="/teacher/upload"
