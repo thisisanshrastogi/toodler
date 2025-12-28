@@ -71,7 +71,7 @@ export default function EditHomeworkPage() {
 
   const handleNewImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-    setNewImages((prev) => [...prev, ...Array.from(e.target.files)]);
+    setNewImages((prev) => [...prev, ...Array.from(e.target.files as FileList)]);
   };
 
   const removeExistingImage = (url: string) => {
