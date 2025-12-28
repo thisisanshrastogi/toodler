@@ -11,11 +11,12 @@ import {
   Smile,
   ChevronLeft,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { uploadToCloudinary } from "@/lib/cloudinary";
-import { useRouter } from "next/navigation";
+import Loader from "@/components/loader";
 
 /* ---------- SUBJECT CONFIG ---------- */
 
@@ -34,12 +35,13 @@ export default function CreateHomeworkPage() {
   const [subject, setSubject] = useState(SUBJECTS[0]);
   const [description, setDescription] = useState("");
   const [images, setImages] = useState<File[]>([]);
+  const [loading, setLoading] = useState(false);
 
   /* ---------- IMAGE HANDLING ---------- */
 
   const handleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-    setImages((prev) => [...prev, ...Array.from(e.target.files as FileList)]);
+    setImages((prev) => [...prev, ...Array.from(e.target.files)]);
   };
 
   const removeImage = (index: number) => {
@@ -61,11 +63,14 @@ export default function CreateHomeworkPage() {
       return;
     }
 
+    setLoading(true);
+
     try {
       const uploadedUrls: string[] = [];
 
       for (const img of images) {
-        uploadedUrls.push(await uploadToCloudinary(img));
+        const url = await uploadToCloudinary(img);
+        uploadedUrls.push(url);
       }
 
       await addDoc(collection(db, "homeworks"), {
@@ -77,17 +82,18 @@ export default function CreateHomeworkPage() {
         createdAt: serverTimestamp(),
       });
 
-      alert("Homework posted ✅");
       router.push("/teacher");
     } catch (err) {
       console.error(err);
       alert("Failed to post homework");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-slate-100 relative font-[Comic_Neue] text-black">
-      {/* Grid */}
+      {/* Font + notebook grid */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
         .notebook-bg {
@@ -100,6 +106,14 @@ export default function CreateHomeworkPage() {
       `}</style>
 
       <div className="fixed inset-0 notebook-bg opacity-70 pointer-events-none" />
+
+      {/* ---------- LOADER ---------- */}
+      {loading && (
+        <div className="fixed inset-0 z-50 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center">
+          <Loader />
+          <p className="mt-4 font-black text-lg">Uploading homework…</p>
+        </div>
+      )}
 
       <main className="relative z-10 max-w-xl mx-auto px-4 py-8 space-y-6">
         {/* Header */}
@@ -114,7 +128,7 @@ export default function CreateHomeworkPage() {
           </button>
         </div>
 
-        {/* DATE */}
+        {/* Date */}
         <div>
           <label className="font-bold block mb-1">
             <Calendar size={16} className="inline mr-2" />
@@ -128,7 +142,7 @@ export default function CreateHomeworkPage() {
           />
         </div>
 
-        {/* SUBJECT */}
+        {/* Subject */}
         <div>
           <label className="font-bold block mb-2">Subject</label>
           <div className="grid grid-cols-2 gap-3">
@@ -150,7 +164,7 @@ export default function CreateHomeworkPage() {
           </div>
         </div>
 
-        {/* DESCRIPTION */}
+        {/* Description */}
         <div>
           <label className="font-bold block mb-1">Homework Instructions</label>
           <textarea
@@ -160,7 +174,7 @@ export default function CreateHomeworkPage() {
           />
         </div>
 
-        {/* IMAGES */}
+        {/* Images */}
         <div>
           <label className="font-bold block mb-2">Images</label>
 
@@ -215,12 +229,13 @@ export default function CreateHomeworkPage() {
           )}
         </div>
 
-        {/* SAVE */}
+        {/* Save */}
         <button
           onClick={handleSave}
-          className={`${subject.color} w-full border-4 border-black rounded-xl py-4 font-black text-xl shadow`}
+          disabled={loading}
+          className={`${subject.color} w-full border-4 border-black rounded-xl py-4 font-black text-xl shadow disabled:opacity-50`}
         >
-          Post Homework
+          {loading ? "Posting…" : "Post Homework"}
         </button>
       </main>
     </div>
