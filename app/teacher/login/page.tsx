@@ -18,17 +18,15 @@ export default function LoginPage() {
     const result = await signInWithPopup(auth, provider);
     const email = result.user.email;
 
-    if (email !== process.env.NEXT_PUBLIC_TEACHER_EMAIL) {
-      await auth.signOut();
-      throw new Error("Not authorized");
-    }
+    // if (email !== process.env.NEXT_PUBLIC_TEACHER_EMAIL) {
+    //   await auth.signOut();
+    //   throw new Error("Not authorized");
+    // }
     console.log(result.user);
     window.location.href = "/teacher/upload";
 
     console.log("Google sign-in successful");
   };
-
-  
 
   return (
     <div className="h-screen w-screen bg-slate-100 flex items-center justify-center relative overflow-hidden font-[Comic_Neue]">
