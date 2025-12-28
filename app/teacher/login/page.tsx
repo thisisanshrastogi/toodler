@@ -24,7 +24,7 @@ export default function LoginPage() {
     //   throw new Error("Not authorized");
     // }
     console.log(result.user);
-    window.location.href = "/teacher/upload";
+    window.location.href = "/teacher";
 
     console.log("Google sign-in successful");
   };
