@@ -1,5 +1,6 @@
 "use client";
 
+import { LogoBlocks } from "@/components/logo-blocks";
 import { auth } from "@/lib/firebase";
 import {
   GoogleAuthProvider,
@@ -49,10 +50,8 @@ export default function LoginPage() {
       {/* Login Card */}
       <div className="relative z-10 w-full max-w-md mx-4 bg-white border-4 border-gray-900 rounded-2xl p-6 sm:p-8 shadow-[8px_8px_0px_0px_rgba(30,41,59,1)]">
         {/* Logo */}
-        <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-pink-500 border-4 border-gray-900 rounded-xl flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(30,41,59,1)]">
-            <span className="text-3xl sm:text-4xl">🧩</span>
-          </div>
+        <div className="flex justify-center my-10 ">
+          <LogoBlocks size="sm" />
         </div>
 
         {/* Title */}
