@@ -41,7 +41,7 @@ export default function CreateHomeworkPage() {
 
   const handleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-    setImages((prev) => [...prev, ...Array.from(e.target.files)]);
+    setImages((prev) => [...prev, ...Array.from(e.target.files as FileList)]);
   };
 
   const removeImage = (index: number) => {
